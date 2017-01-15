@@ -3,7 +3,7 @@ package com.test;
 public class TestPFAM extends TestBase {
 	StringBuilder pfamReport;
 
-	public TestPFAM(String[] args) {
+	public TestPFAM(String[] args) throws Exception {
 		super(args);
 	}
 

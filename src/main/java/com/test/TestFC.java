@@ -3,7 +3,7 @@ package com.test;
 public class TestFC extends TestBase {
 	StringBuilder fcReport;
 
-	public TestFC(String[] args) {
+	public TestFC(String[] args) throws Exception {
 		super(args);
 	}
 

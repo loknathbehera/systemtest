@@ -1,12 +1,19 @@
 package com.test;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Map;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.test.client.JfrogArtifactoryClient;
 import com.test.jenkins.JenkinsScraper;
 import com.test.rtc.RTCAgent;
+import com.test.util.Credential;
 
 public class TestBase {
 
@@ -14,11 +21,14 @@ public class TestBase {
 
 	protected RTCAgent rtcAgent;
 	protected JenkinsScraper jenkinsScraper;
+	protected JfrogArtifactoryClient artifactoryClient;
 	protected StringBuilder finalReport;
 	protected StringBuilder pverReport;
 	protected StringBuilder fcReport;
 	protected StringBuilder pfamReport;
 	Map<String, TemplateClass> cachedData;
+	Properties properties;
+	FileInputStream inStream;
 
 	public TestBase() {
 		finalReport = new StringBuilder();
@@ -27,13 +37,30 @@ public class TestBase {
 		fcReport = new StringBuilder();
 	}
 
-	public TestBase(String[] args) {
-		String userName = args[0];
-		String password = args[1];
-		String rtcUrl = args[2];
+	public TestBase(String[] args) throws Exception {
+
+		properties = new Properties();
+
+		try {
+			inStream = new FileInputStream(args[0]);
+			properties.load(inStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String userName = properties.getProperty("userId");
+		String password = Credential.decrypt(properties.getProperty("password"));
+		String rtcUrl = properties.getProperty("rtcUrl");
+		String artifactoryUrl = properties.getProperty("artifactoryUrl");
+
+		if (userName == null || password == null || rtcUrl == null) {
+			System.out.println("Create the connfig.properties file \n java -cp systemtest-1.0-jar-with-dependencies.jar com.util.GenerateConfig");
+			throw new Exception("Configure the the config file");
+		}
 
 		rtcAgent = RTCAgent.getInstance(rtcUrl, userName, password);
 		jenkinsScraper = new JenkinsScraper(userName, password);
+		artifactoryClient=JfrogArtifactoryClient.getInstance(artifactoryUrl, userName, password);
 	}
 
 	public void startThreads(Thread... threads) {

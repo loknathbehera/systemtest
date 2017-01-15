@@ -3,7 +3,7 @@ package com.test;
 public class TestPver extends TestBase {
 	StringBuilder pverReport;
 
-	public TestPver(String[] args) {
+	public TestPver(String[] args) throws Exception {
 		super(args);
 	}
 
@@ -38,6 +38,8 @@ public class TestPver extends TestBase {
 	public String testMDGBPver() {
 		System.out.println(rtcAgent.getResult(""));
 
+		System.out.println(artifactoryClient.downloadFile("http://localhost:8081/artifactory/ext-release-local/path/to/newName.txt"));
+		
 		return "MDGB Pver test";
 
 	}
