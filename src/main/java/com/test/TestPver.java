@@ -7,6 +7,10 @@ public class TestPver extends TestBase {
 		super(args);
 	}
 
+	public static void main(String[] args) throws Exception {
+		new TestPver(args).runPverTest();
+	}
+
 	public StringBuilder runPverTest() throws InterruptedException {
 
 		pverReport = new StringBuilder();
@@ -18,8 +22,8 @@ public class TestPver extends TestBase {
 		Runnable mdgbPver = () -> {
 			pverReport.append(testMDGBPver());
 		};
-		Thread t1 = new Thread(checkoutPver);
-		Thread t2 = new Thread(mdgbPver);
+		Thread t1 = new Thread(checkoutPver,"checkoutPver");
+		Thread t2 = new Thread(mdgbPver,"mdgbPver");
 
 		startAndWaitAllThreadToComplete(t1, t2);
 		return pverReport;

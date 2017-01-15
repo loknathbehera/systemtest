@@ -38,6 +38,7 @@ public class TestBase {
 
 	public void startThreads(Thread... threads) {
 		for (Thread thread : threads) {
+			logger.info("{} Start......", thread.getName());
 			thread.start();
 		}
 	}
@@ -45,10 +46,10 @@ public class TestBase {
 	public void waitAllThreadToComplete(Thread... threads) {
 		for (Thread thread : threads) {
 			try {
+				logger.info("{} waiting to complete......", thread.getName());
 				thread.join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("ERROR :{}" + e);
 			}
 		}
 	}

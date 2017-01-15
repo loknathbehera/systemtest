@@ -7,6 +7,10 @@ public class TestFC extends TestBase {
 		super(args);
 	}
 
+	public static void main(String[] args) throws Exception {
+		new TestFC(args).runFCTest();
+	}
+
 	public StringBuilder runFCTest() throws InterruptedException {
 
 		fcReport = new StringBuilder();
@@ -18,8 +22,8 @@ public class TestFC extends TestBase {
 		Runnable mdgbFC = () -> {
 			fcReport.append(testMDGBFC());
 		};
-		Thread t1 = new Thread(checkoutFC);
-		Thread t2 = new Thread(mdgbFC);
+		Thread t1 = new Thread(checkoutFC,"checkoutFC");
+		Thread t2 = new Thread(mdgbFC,"mdgbFC");
 		startAndWaitAllThreadToComplete(t1, t2);
 
 		return fcReport;

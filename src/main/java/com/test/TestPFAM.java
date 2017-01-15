@@ -7,6 +7,11 @@ public class TestPFAM extends TestBase {
 		super(args);
 	}
 
+	public static void main(String[] args) throws Exception {
+		logger.info("PFAM Test Start ");
+		new TestPFAM(args).runPFAMTest();
+	}
+
 	public StringBuilder runPFAMTest() throws InterruptedException {
 
 		pfamReport = new StringBuilder();
@@ -18,8 +23,8 @@ public class TestPFAM extends TestBase {
 		Runnable mdgbPFAM = () -> {
 			pfamReport.append(testMDGBPFAM());
 		};
-		Thread t1 = new Thread(checkoutPFAM);
-		Thread t2 = new Thread(mdgbPFAM);
+		Thread t1 = new Thread(checkoutPFAM,"checkoutPFAM");
+		Thread t2 = new Thread(mdgbPFAM,"mdgbPFAM");
 		startAndWaitAllThreadToComplete(t1, t2);
 
 		return pfamReport;
